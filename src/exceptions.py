@@ -33,3 +33,21 @@ class InvalidPasswordError(UserError):
 class AuthenticationError(HTTPException):
     def __init__(self, message: str = "Could not validate user"):
         super().__init__(status_code=401, detail=message)
+
+
+class ConversationError(HTTPException):
+    """Base exception for todo-related errors"""
+    pass
+
+class ConversationCreationError(ConversationError):
+    def __init__(self, error: str):
+        super().__init__(status_code=500, detail=f"Failed to create conversation: {error}")
+
+class ChatSessionCreationError(ConversationError):
+    def __init__(self, error: str):
+        super().__init__(status_code=500, detail=f"Failed to create chat session: {error}")
+
+
+class ChatMessageCreationError(ConversationError):
+    def __init__(self, error: str):
+        super().__init__(status_code=500, detail=f"Failed to create chat message: {error}")

@@ -14,7 +14,7 @@ load_dotenv()
 # DATABASE_URL = "sqlite:///./todosapp.db"
 
 """ Or hard code PostgreSQL here """
-DATABASE_URL="postgresql://postgres:postgres@db:5432/cleanfastapi"
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/cleanfastapi"
 
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL is not set in environment variables")
@@ -34,3 +34,5 @@ def get_db():
         
 DbSession = Annotated[Session, Depends(get_db)]
 
+def create_tables():
+    Base.metadata.create_all(bind=engine)

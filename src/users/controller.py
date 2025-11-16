@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get("/me", response_model=models.UserResponse)
+@router.get("/me", response_model=models.User)
 def get_current_user(current_user: CurrentUser, db: DbSession):
     return service.get_user_by_id(db, current_user.get_uuid())
 
