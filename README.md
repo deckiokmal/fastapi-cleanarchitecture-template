@@ -18,8 +18,13 @@ I'm open to hearing your feedback about the template and what you'd like to see 
 
 --
 
+# Setup Project
+- Run `uv init` for project initialization.
+- Run `uv venv` for creating python virtual environment.
+- Run `.venv/Scripts/activate` for windows venv activate.
+
 # Install all dependencies.
-- Run `pip install -r requirements-dev.txt`
+- Run `uv pip install -r requirements-dev.txt`
 
 # How to run app. Using Docker with PostgreSQL.
 - Install Docker Desktop

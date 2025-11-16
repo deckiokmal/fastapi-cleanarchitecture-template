@@ -16,6 +16,9 @@ load_dotenv()
 """ Or hard code PostgreSQL here """
 DATABASE_URL="postgresql://postgres:postgres@db:5432/cleanfastapi"
 
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL is not set in environment variables")
+
 engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
