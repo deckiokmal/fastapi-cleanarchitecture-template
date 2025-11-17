@@ -8,8 +8,11 @@ class UserBase(BaseModel):
     email: EmailStr
     first_name: str
     last_name: Optional[str] = None
-    is_active: bool = True
 
+
+class UserCreate(UserBase):
+    password: str
+    
 
 class PasswordChange(BaseModel):
     current_password: str
@@ -17,12 +20,10 @@ class PasswordChange(BaseModel):
     new_password_confirm: str
 
 
-class UserCreate(UserBase):
-    password: str
-
-
 class User(UserBase):
     id: UUID
+    is_active: bool = True
     created_at: datetime
+    updated_at: Optional[datetime] = None
     
     model_config = ConfigDict(from_attributes=True)

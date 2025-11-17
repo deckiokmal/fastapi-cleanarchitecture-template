@@ -43,11 +43,15 @@ class ConversationCreationError(ConversationError):
     def __init__(self, error: str):
         super().__init__(status_code=500, detail=f"Failed to create conversation: {error}")
 
+class GetConversationError(ConversationError):
+    def __init__(self, error: str):
+        super().__init__(status_code=404, detail=f"Failed to get conversation: {error}")
+
 class ChatSessionCreationError(ConversationError):
     def __init__(self, error: str):
-        super().__init__(status_code=500, detail=f"Failed to create chat session: {error}")
+        super().__init__(status_code=400, detail=f"Failed to create chat session: {error}")
 
 
 class ChatMessageCreationError(ConversationError):
     def __init__(self, error: str):
-        super().__init__(status_code=500, detail=f"Failed to create chat message: {error}")
+        super().__init__(status_code=400, detail=f"Failed to create chat message: {error}")

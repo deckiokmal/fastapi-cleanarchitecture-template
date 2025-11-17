@@ -17,8 +17,8 @@ class User(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
     # Relationships
-    conversations = relationship('Conversation', back_populates='user')
-    chat_sessions = relationship('ChatSession', back_populates='user')
+    conversations = relationship('Conversation', back_populates='user', cascade='all, delete-orphan')
+    chat_sessions = relationship('ChatSession', back_populates='user', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f"<User(email='{self.email}', first_name='{self.first_name}', last_name='{self.last_name}')>"

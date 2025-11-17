@@ -39,4 +39,20 @@ I'm open to hearing your feedback about the template and what you'd like to see 
 - Run `pytest` to run all tests
 
 
-Cheers!
+User
+  │
+  ├─── Conversation (One-to-Many)
+  │       │
+  │       └─── ChatSession (One-to-Many)
+  │               │
+  │               └─── ChatMessage (One-to-Many)
+  │
+  └─── ChatSession (One-to-Many)
+
+BotPersonality
+  │
+  └─── ConversationSetting (One-to-Many)
+
+ChatMessage
+  │
+  └─── UserFeedback (One-to-One)

@@ -17,7 +17,7 @@ class Conversation(Base):
     
     # Relationships
     user = relationship('User', back_populates='conversations')
-    chat_sessions = relationship('ChatSession', back_populates='conversation')
+    chat_sessions = relationship('ChatSession', back_populates='conversation', cascade='all, delete-orphan')
     
     def __repr__(self):
         return f"<Conversation(id={self.id}, title={self.title}, user_id={self.user_id})>"
@@ -26,7 +26,7 @@ class Conversation(Base):
 class ChatSession(Base):
     __tablename__ = "chat_sessions"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     conversation_id = Column(UUID(as_uuid=True), ForeignKey("conversations.id", ondelete="CASCADE"), nullable=False)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     session_token = Column(String(100), unique=True, index=True, nullable=False)
@@ -38,7 +38,7 @@ class ChatSession(Base):
     # Relationships
     user = relationship("User", back_populates="chat_sessions")
     conversation = relationship("Conversation", back_populates="chat_sessions")
-    messages = relationship("ChatMessage", back_populates="chat_session")
+    messages = relationship("ChatMessage", back_populates="chat_session", cascade='all, delete-orphan')
     
     def __repr__(self):
         return f"<ChatSession(id={self.id}, session_token='{self.session_token}')>"
@@ -47,7 +47,7 @@ class ChatSession(Base):
 class ChatMessage(Base):
     __tablename__ = "chat_messages"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     chat_session_id = Column(UUID(as_uuid=True), ForeignKey("chat_sessions.id", ondelete="CASCADE"), nullable=False)
     message_type = Column(String(20), nullable=False)  # 'user', 'assistant', 'system'
     content = Column(Text, nullable=False)
@@ -60,13 +60,13 @@ class ChatMessage(Base):
     chat_session = relationship("ChatSession", back_populates="messages")
     
     def __repr__(self):
-        return f"<ChatMessage(id={self.id}, type='{self.message_type}', content='{self.content[:50]}...')>"
+        return f"<ChatMessage(id={self.id}, type='{self.message_type}')>"
     
     
 class BotPersonality(Base):
     __tablename__ = "bot_personalities"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     name = Column(String(100), unique=True, nullable=False)
     description = Column(Text)
     system_prompt = Column(Text, nullable=False)
@@ -85,7 +85,7 @@ class BotPersonality(Base):
 class ConversationSetting(Base):
     __tablename__ = "conversation_settings"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     conversation_id = Column(UUID(as_uuid=True), ForeignKey("conversations.id", ondelete="CASCADE"), nullable=False)
     bot_personality_id = Column(UUID(as_uuid=True), ForeignKey("bot_personalities.id", ondelete="SET NULL"), nullable=True)
     settings = Column(JSON)  # Additional settings like model name, etc.
@@ -102,7 +102,7 @@ class ConversationSetting(Base):
 class UserFeedback(Base):
     __tablename__ = "user_feedbacks"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     chat_message_id = Column(UUID(as_uuid=True), ForeignKey("chat_messages.id", ondelete="CASCADE"), nullable=False)
     rating = Column(Integer)  # 1-5 scale
     feedback_text = Column(Text)
